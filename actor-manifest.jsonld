@@ -1,0 +1,17 @@
+{
+  "@context": "https://kotodama.etzhayyim.com/ns/actor-manifest/v1",
+  "@type": "ActorManifest",
+  "did": "did:web:compintel.etzhayyim.com",
+  "nanoid": "cpti0001",
+  "name": "compintel",
+  "displayName": "Etzhayyim Competitive Intel",
+  "description": "Competitive Intelligence Dashboard — LangGraph multi-dimension research loop. Weekly refresh Monday 08:00 JST. Threat scoring + alert digest via Resend.",
+  "performerType": "service",
+  "domain": "compintel.etzhayyim.com",
+  "capabilities": [
+    "com.etzhayyim.apps.compintel.trackCompetitor",
+    "com.etzhayyim.apps.compintel.getSnapshot",
+    "com.etzhayyim.apps.compintel.listCompetitors",
+    "com.etzhayyim.apps.compintel.getAlert"
+  ]
+}

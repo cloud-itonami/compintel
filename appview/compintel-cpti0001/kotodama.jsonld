@@ -1,0 +1,35 @@
+{
+  "@context": "https://kotodama.etzhayyim.com/ns/v1",
+  "@type": "KotodamaApp",
+  "nanoid": "cpti0001",
+  "name": "compintel",
+  "displayName": "Etzhayyim Competitive Intel",
+  "description": "Competitive Intelligence Dashboard — LangGraph multi-dimension research loop. Weekly refresh Monday 08:00 JST. Threat scoring + alert digest via Resend.",
+  "did": "did:web:compintel.etzhayyim.com",
+  "domain": "compintel.etzhayyim.com",
+  "performerType": "service",
+  "uiType": "appview",
+  "runtimeType": "ts-thin-edge",
+  "bpmn": "etzhayyim-root/00-contracts/bpmn/com/etzhayyim/compintel",
+  "routes": [
+    { "pattern": "cpti0001.etzhayyim.com/*", "zone_name": "etzhayyim.com" },
+    { "pattern": "compintel.etzhayyim.com/*", "zone_name": "etzhayyim.com" }
+  ],
+  "subscribeRepos": [
+    {
+      "collection": "com.etzhayyim.apps.news.article",
+      "description": "Ingest news articles mentioning tracked competitors for signal extraction"
+    }
+  ],
+  "capabilities": [
+    "com.etzhayyim.apps.compintel.trackCompetitor",
+    "com.etzhayyim.apps.compintel.getSnapshot",
+    "com.etzhayyim.apps.compintel.listCompetitors",
+    "com.etzhayyim.apps.compintel.getAlert"
+  ],
+  "integrations": {
+    "ads": "com.etzhayyim.apps.ads.createCampaign",
+    "email": "resend",
+    "newsIngest": "com.etzhayyim.apps.news.article"
+  }
+}
