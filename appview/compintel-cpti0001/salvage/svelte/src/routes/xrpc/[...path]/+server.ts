@@ -1,3 +1,30 @@
+// PROVENANCE: salvaged verbatim from
+// appview/compintel-cpti0001/svelte/src/routes/xrpc/[...path]/+server.ts
+// during the Svelte → ClojureScript frontend migration (branch
+// agent/cljs-migration, see appview/compintel-cpti0001/cljs/).
+//
+// This is a real backend HTTP handler, not frontend markup: it is the
+// XRPC → MCP-router proxy that README.md calls "唯一の実処理" (the only
+// real processing this repo does) — the live half of the two competing XRPC
+// relays this repo shipped (the other, src/app.ts, was never wired into
+// wrangler.jsonc's `main` and never ran). It happened to live inside
+// svelte/src/routes/ only because SvelteKit's file-based routing puts
+// server route handlers next to page files, not because it is part of the
+// Svelte UI.
+//
+// It will NOT run as-is: SvelteKit (`@sveltejs/kit`'s `json` helper, the
+// `./$types` route-typegen, and file-based routing itself) is gone from
+// this repo along with svelte/. Reimplementing this proxy as a plain
+// Cloudflare Worker fetch handler (or folding it into
+// appview/compintel-cpti0001/src/app.ts) is a separate, out-of-scope task —
+// this migration only replaces the frontend. Note also that its upstream,
+// mcp.etzhayyim.com, does not resolve in DNS as of 2026-08-12 (README.md
+// "ホストの現在地"), so today this handler already 500s in production
+// regardless of whether it is wired up; nothing live regresses by its
+// removal from the served worker.
+//
+// Body below this header is byte-identical to the original file.
+
 import { json, type RequestEvent } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
