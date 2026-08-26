@@ -1,0 +1,82 @@
+(ns gen-page
+  "Generate `public/index.html` — the single document this app serves — from
+  `jp-go-dds.page/->page`, so the shipped page tracks the design system
+  instead of a hand-written snapshot of it (same pattern as kami-app-nle /
+  kami-app-daw's `scripts/gen-page.cljs`, and app-docs' / app-forms' /
+  app-search's `cljs/scripts/gen-page.cljs`).
+
+  Run:   nbb --classpath \"$(clojure -Spath)\" scripts/gen-page.cljs
+  Check: same, with --check (exit 1 if the committed file is stale)"
+  (:require ["node:fs" :as fs]
+            ["node:process" :as process]
+            [clojure.string :as str]
+            [jp-go-dds.page :as dds-page]
+            [jp-go-dds.tokens :as tokens]))
+
+(def dds-root
+  "Where the vendored DADS CSS lives. nbb has no resource loader; env override
+  first, because this repo's checkout path is not fixed (west-managed pin,
+  or an isolated migration worktree outside the superproject)."
+  (or (first (filter #(and % (fs/existsSync (str % "/resources/jp_go_dds/dds.css")))
+                     [(some-> js/process .-env .-DDS_ROOT)
+                      "orgs/kotoba-lang/jp-go-digital-design-system"
+                      "../jp-go-digital-design-system"
+                      "../../kotoba-lang/jp-go-digital-design-system"
+                      "../../../orgs/kotoba-lang/jp-go-digital-design-system"]))
+      (throw (js/Error. (str "jp-go-digital-design-system の dds.css が見つからない。"
+                             "DDS_ROOT で場所を渡すこと。")))))
+
+(def dds-css (str (fs/readFileSync (str dds-root "/resources/jp_go_dds/dds.css") "utf8")))
+
+(def out-path "public/index.html")
+
+;; The small look the original Svelte `<style>` block had that jp-go-dds has
+;; no component for (uppercase "Cloudflare {kind}" eyebrow, monospace app
+;; name / route / source-path text, muted secondary-label copy) — written
+;; against the shared `--hig-*` token contract (`jp-go-dds.tokens/bridge-css`,
+;; loaded above it so app rules win), never raw hex or px, per the
+;; kotoba-uiux skill. Class names match src/compintel/app.cljs's hiccup.
+(def app-css
+  (str/join
+   "\n"
+   [".ci-eyebrow { margin: 0 0 var(--hig-spacing-2); color: var(--hig-color-secondary-label);"
+    "  font-size: var(--hig-text-footnote-font-size); font-weight: 700; text-transform: uppercase; }"
+    ".ci-name { display: block; margin-top: var(--hig-spacing-2); font-family: var(--hig-font-mono);"
+    "  overflow-wrap: anywhere; }"
+    ".ci-muted { color: var(--hig-color-secondary-label); }"
+    ".ci-mono { font-family: var(--hig-font-mono); overflow-wrap: anywhere; }"
+    ".ci-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column;"
+    "  gap: var(--hig-spacing-2); }"
+    ".ci-list li { border: 1px solid var(--hig-color-separator); border-radius: var(--hig-radius-sm);"
+    "  padding: var(--hig-spacing-2) var(--hig-spacing-3); background: var(--hig-color-secondary-system-background); }"
+    ".ci-chips { display: flex; flex-wrap: wrap; gap: var(--hig-spacing-2); }"]))
+
+(defn page []
+  (dds-page/->page
+   {:title "compintel-cpti0001"
+    :description "Compintel Cpti0001 — Cloudflare appview (reagent + re-frame + jp-go-dds)."
+    :lang "ja"
+    :css dds-css
+    :app-css (str tokens/bridge-css "\n" app-css)}
+   [:div {:id "app"} "compintel-cpti0001 loading…"]
+   [:noscript "This app requires JavaScript."]
+   [:script {:src "js/app.js"}]))
+
+(defn -main [& args]
+  (let [check? (some #{"--check"} args)
+        html (page)
+        current (when (fs/existsSync out-path) (str (fs/readFileSync out-path "utf8")))]
+    (cond
+      (and check? (= current html))
+      (println out-path "up to date")
+
+      check?
+      (do (println "STALE:" out-path "differs from its generator.")
+          (println "Run: nbb --classpath \"$(clojure -Spath)\" scripts/gen-page.cljs")
+          (process/exit 1))
+
+      :else
+      (do (fs/writeFileSync out-path html)
+          (println "wrote" out-path (count html) "bytes")))))
+
+(apply -main (drop 2 (js->clj (.-argv process))))
