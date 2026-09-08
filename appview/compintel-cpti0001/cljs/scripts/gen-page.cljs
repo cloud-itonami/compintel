@@ -9,7 +9,7 @@
   Check: same, with --check (exit 1 if the committed file is stale)"
   (:require ["node:fs" :as fs]
             ["node:process" :as process]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [jp-go-dds.page :as dds-page]
             [jp-go-dds.tokens :as tokens]))
 
