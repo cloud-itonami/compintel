@@ -24,7 +24,7 @@
 
 (deftest relative-path-points-at-this-migration-not-the-deleted-svelte-file
   (testing "the one deliberate data change: relative-path no longer names a deleted file"
-    (is (= "appview/compintel-cpti0001/cljs/src/compintel/app.cljs"
+    (is (= "appview/compintel-cpti0001/cljs/src/compintel/app.cljk"
            (:relative-path app/initial-db)))))
 
 (deftest app-view-renders-hiccup-rooted-at-main

@@ -45,7 +45,7 @@
    :routes []
    :vars []
    :xrpc? true
-   :relative-path "appview/compintel-cpti0001/cljs/src/compintel/app.cljs"})
+   :relative-path "appview/compintel-cpti0001/cljs/src/compintel/app.cljk"})
 
 (rf/reg-event-db
  ::initialize
