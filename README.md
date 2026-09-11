@@ -172,7 +172,7 @@ zone（`etzhayyim.com`）は生きているが、`wrangler.jsonc` が宣言す�
   `env.ASSETS.fetch` を呼ばないため（呼ばないハンドラを前に置くと assets が
   誰にも配信されなくなる）。
 - **ビルド検証**（このワークスペースの resource-guard 経由、foreground）:
-  `shadow-cljs compile app` / `compile test` とも成功、`node out/tests.js` は
+  `amu compile --target wasm32-browser app` / `compile test` とも成功、`node out/tests.js` は
   **7 tests / 25 assertions / 0 failures / 0 errors**。
 - **`wrangler deploy` は実行していない —— UNVERIFIED。** 移行前から
   `compintel.etzhayyim.com` / `cpti0001.etzhayyim.com` は DNS に無く
