@@ -59,7 +59,7 @@ added 129 packages in 10s
 `scripts/gen-page.cljs` と `src/compintel/app.cljs`（app-css の側）。
 
 ```bash
-nbb --classpath "$(clojure -Spath)" scripts/gen-page.cljs
+kbb --backend sci --classpath "$(kbb -Spath)" scripts/gen-page.cljs
 ```
 
 ```
@@ -72,7 +72,7 @@ wrote public/index.html 79006 bytes
 ## 3. ビルドする
 
 ```bash
-node /path/to/com-junkawasaki/scripts/resource-guard.mjs run build -- npx shadow-cljs compile app
+node /path/to/com-junkawasaki/scripts/resource-guard.mjs run build -- amu compile --target wasm32-browser app
 ```
 
 ```
@@ -90,7 +90,7 @@ ls public/index.html     # step 2 の生成物
 ## 4. テストする
 
 ```bash
-node /path/to/com-junkawasaki/scripts/resource-guard.mjs run build -- npx shadow-cljs compile test
+node /path/to/com-junkawasaki/scripts/resource-guard.mjs run build -- amu compile --target wasm32-browser test
 node out/tests.js
 ```
 
@@ -110,7 +110,7 @@ Ran 7 tests containing 25 assertions.
 ## 5. dev server で見る（任意）
 
 ```bash
-npx shadow-cljs watch app
+amu compile --target wasm32-browser app
 ```
 
 `public/index.html` を直接開くか、`shadow-cljs` が案内する URL を開く。
