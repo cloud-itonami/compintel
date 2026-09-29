@@ -19,7 +19,7 @@ ClojureScript ビルド、`appview/compintel-cpti0001/cljs/`）—— SvelteKit 
 
 ## 何が入っていて、何が入っていないか
 
-`CLAUDE.md`（抽出前の monorepo 時代の runbook）は 4 つの場所を名指しするが、
+`AGENTS.md`（抽出前の monorepo 時代の runbook）は 4 つの場所を名指しするが、
 **この repo に在るのは 1 つだけ**。実測 2026-08-12:
 
 | runbook が指す場所 | 今日どこに在るか |
@@ -30,7 +30,7 @@ ClojureScript ビルド、`appview/compintel-cpti0001/cljs/`）—— SvelteKit 
 | `90-docs/adr/2605072000-langgraph-agent-loop-pattern.md` | ❌ この repo には無い |
 
 **したがって「LangGraph 6 ノードのループ」は、この repo からは動かせない。**
-`CLAUDE.md` 末尾の `python -m kotodama.compintel_worker_main` は、
+`AGENTS.md` 末尾の `python -m kotodama.compintel_worker_main` は、
 **踏めない手順**として読むこと（`cd` 先のディレクトリ自体がここに無い）。
 
 ### BPMN だけは生きているので、そこは引ける
@@ -59,7 +59,7 @@ ClojureScript ビルド、`appview/compintel-cpti0001/cljs/`）—— SvelteKit 
 
 ```
 README.edn                 111B  機械可読 metadata（:kind :app）。人間向けの説明は入っていない
-CLAUDE.md                        抽出前の runbook。上表のとおり 3/4 のパスが死んでいる
+AGENTS.md                        抽出前の runbook。上表のとおり 3/4 のパスが死んでいる
 NOTICE                           Apache-2.0 + etzhayyim Charter Rider v3.1
 actor-manifest.jsonld            DID did:web:compintel.etzhayyim.com / nanoid cpti0001 / capability 4 本
 migration.edn                    抽出元 etzhayyim/root@c3a74d2 の記録（13 files / 17,354B）
